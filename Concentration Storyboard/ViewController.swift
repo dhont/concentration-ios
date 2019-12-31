@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
 
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2 )
+    var cheatsEnabled = true
     
     @IBOutlet var cardButtons: [UIButton]!
     
@@ -42,8 +43,8 @@ class ViewController: UIViewController {
             let button = cardButtons[index]
             
             if card.isFaceDown {
-                button.setTitle("", for: UIControl.State.normal)
-                button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0) : #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+                button.setTitle(cheatsEnabled ? emoji(for: card) : "", for: UIControl.State.normal)
+                button.backgroundColor = card.isMatched ?  ( !cheatsEnabled ? #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0) : #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694) ): #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1) //
             } else {
                 button.setTitle(emoji(for: card), for: UIControl.State.normal)
                 button.backgroundColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
@@ -54,8 +55,11 @@ class ViewController: UIViewController {
         
         if game.isGameOver{
             for index in cardButtons.indices{
-                cardButtons[index].backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0)
-                cardButtons[index].setTitle("", for: UIControl.State.normal)
+                cardButtons[index].backgroundColor = !cheatsEnabled ? #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 0) : #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694)
+                if !cheatsEnabled {
+                    cardButtons[index].setTitle("", for: UIControl.State.normal)
+                }
+                
             }
             flipCountrLabel.text = ""
             labelCongrats.text  = "Congratulations, you scored \(100-game.numberOfFlips) points!"

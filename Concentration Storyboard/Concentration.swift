@@ -20,12 +20,12 @@ class Concentration
     
     var isGameOver = false
     
-    var previouslySeenCards: Dictionary<Int,Int>
+    var previouslySeenCards: [Int:Int]
     
     func curentScore () -> Int {
-       // return pointsGiven + previouslySeenCards.filter({$0 > 1}).reduce(0, +)
-        
-        return 100 - numberOfFlips
+        let pointsTaken =  Array(previouslySeenCards.values).reduce(0, +)
+        print("Points given: \(pointsGiven) and points Taken \(pointsTaken)")
+        return pointsGiven - pointsTaken
     }
     
     func chooseCard(at index: Int){
@@ -40,18 +40,20 @@ class Concentration
                     pointsGiven += 2
                 } else{
                 // mismatched
-                    // previouslySeenCards[cards[index].identifier] += 1
+
+                    previouslySeenCards[cards[index].identifier] = (previouslySeenCards[cards[index].identifier] ?? -1) + 1
+
+                    previouslySeenCards[cards[matchIndex].identifier] = (previouslySeenCards[cards[matchIndex].identifier] ?? -1) + 1
                 }
                 cards[index].isFaceDown = false
                 indexOfOneAndOnlyFaceUpCard = nil
-                // previouslySeenCards[cards[index].identifier] += 1
+
             } else {
                 for flipDownCards in cards.indices{
                     cards[flipDownCards].isFaceDown = true
                 }
                 cards[index].isFaceDown = false
                 indexOfOneAndOnlyFaceUpCard = index
-                // previouslySeenCards[cards[index].identifier] += 1
             }
             evaluateIfGameOver()
         }
@@ -80,7 +82,6 @@ class Concentration
             let card = Card()
             emptyCardsArray[firstRandomCardIndex] = card
             emptyCardsArray[secondRandomCardIndex] = card
-            //previouslySeenCards.add
             cards = emptyCardsArray.compactMap{$0}
         }
     }
