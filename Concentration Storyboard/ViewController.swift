@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
 
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2 )
-    var cheatsEnabled = true
+    var cheatsEnabled = false
     
     @IBOutlet var cardButtons: [UIButton]!
     
@@ -62,7 +62,7 @@ class ViewController: UIViewController {
                 
             }
             flipCountrLabel.text = ""
-            labelCongrats.text  = "Congratulations, you scored \(100-game.numberOfFlips) points!"
+            labelCongrats.text  = "Done. Another?"
             labelCongrats.isHidden = false
         } else {
             labelCongrats.isHidden = true
